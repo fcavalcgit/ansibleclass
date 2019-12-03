@@ -1,0 +1,23 @@
+---
+# tasks file for roles/postgres
+- name: Install postgresql
+  yum:
+    name: postgresql-server
+    state: latest
+
+- name: Enable postgresql at boot
+  service:
+    name: postgresql
+    enabled: yes
+
+# only run the next 2 tasks once!
+- name: Initialize postgresql
+  shell: postgresql-setup initdb
+  args:
+    creates: /var/lib/pgsql/data/pg_hba.conf
+
+- name: Check config for postgresql
+  shell: chkconfig postgresql on
+  args:
+    creates: /var/lib/pgsql/data/pg_hba.conf
+  notify: Start postgresql
