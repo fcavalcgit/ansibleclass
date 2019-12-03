@@ -34,12 +34,16 @@
     include_role:
       name: haproxy
 
-#  tasks:
-#  - name: Configure app servers
-#    include_role:
-#      name: apps
-#    when: >-
-#      'apps' in group_names
+- name: Configure app
+  hosts: all
+  tasks:
+  - name: Configure app servers
+    include_role:
+      name: apps
+    when: >-
+      'apps' in group_names
+
+
 
 - name: deploy postgres
   gather_facts: false
@@ -47,6 +51,7 @@
   hosts: appdbs
 
   tasks:
+  - name: Deploy postgres
     include_role:
       name: postgres
 
